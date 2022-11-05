@@ -3,6 +3,7 @@ package com.hami.service;
 import com.hami.model.User;
 import com.hami.repository.UserRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -12,9 +13,11 @@ import java.util.Objects;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public User register(String firstName, String lastName, String email, String password, String passwordConfirm) {
@@ -24,7 +27,7 @@ public class UserService {
         }
 
         return userRepository.save(
-                User.of(firstName, lastName, email, password)
+                User.of(firstName, lastName, email, passwordEncoder.encode(password))
         );
     }
 }

@@ -16,7 +16,7 @@ public class UserController {
 
 
     record RegisterRequest(@JsonProperty("first_name") String firstName,@JsonProperty("last_name") String lastName,String email,String password, @JsonProperty("password_confirm") String passwordConfirm) { }
-    record  RegisterResponse(Long id, @JsonProperty("first_name") String firstName,@JsonProperty("last_name") String lastName,String email) {}
+    record  RegisterResponse(Long id, @JsonProperty("first_name") String firstName,@JsonProperty("last_name") String lastName,String email, String password) {}
 
     @PostMapping(value = "/register")
     public RegisterResponse register(@RequestBody RegisterRequest registerRequest) {
@@ -27,11 +27,11 @@ public class UserController {
                         registerRequest.lastName(),
                         registerRequest.email(),
                         registerRequest.password(),
-                registerRequest.passwordConfirm
+                        registerRequest.passwordConfirm()
 
         );
 
-        return new RegisterResponse(user.getId(), user.getFirstName(),  user.getLastName(), user.getEmail());
+        return new RegisterResponse(user.getId(), user.getFirstName(),  user.getLastName(), user.getEmail(), user.getPassword());
     }
 
 }

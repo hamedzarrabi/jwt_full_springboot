@@ -34,4 +34,13 @@ public class UserController {
         return new RegisterResponse(user.getId(), user.getFirstName(),  user.getLastName(), user.getEmail(), user.getPassword());
     }
 
+    record LoginRequest(String email, String password){}
+    record  LoginResponse(Long id, @JsonProperty("first_name") String firstName,@JsonProperty("last_name") String lastName,String email) {}
+    @PostMapping(value = "/login")
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
+        var user = userService.login(loginRequest.email(), loginRequest.password());
+
+        return new LoginResponse(user.getId(), user.getFirstName(), user.getLastName(), user.getEmail());
+    }
+
 }

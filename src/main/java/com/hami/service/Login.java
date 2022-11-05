@@ -21,4 +21,11 @@ public class Login {
         );
     }
 
+    public static Login of(Long userId, String accessSecret, Token refreshToken) {
+        return new Login(
+                Token.of(userId, 1L, accessSecret),
+                refreshToken
+        );
+    }
+
 }

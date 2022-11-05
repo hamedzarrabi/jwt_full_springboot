@@ -3,6 +3,7 @@ package com.hami.service;
 import com.hami.exception.EmailAlreadyExistsError;
 import com.hami.exception.InvalidCredentialsError;
 import com.hami.exception.PasswordDontMatchError;
+import com.hami.exception.UserNotfoundError;
 import com.hami.model.User;
 import com.hami.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -60,5 +61,10 @@ public class UserService {
 
 //        return user
         return Login.of(user.getId(),   accessTokenSecret, refreshTokenSecret);
+    }
+
+    public User getUserFromToken(String token) {
+        return userRepository.findById(Token.from(token, accessTokenSecret))
+                .orElseThrow(UserNotfoundError:: new);
     }
 }
